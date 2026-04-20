@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#f2ede1">
+<meta name="color-scheme" content="light only">
+<meta name="supported-color-schemes" content="light">
+<title>旅のしおり｜4/20 – 4/22</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;500;700;900&family=Shippori+Mincho:wght@400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    color-scheme: light only;
+    --paper: #f3ede0;
+    --paper-2: #ece4d2;
+    --ink: #1a1815;
+    --ink-soft: #3a342c;
+    --ink-mute: #8b8272;
+    --line: #c9bea7;
+    --line-soft: #dfd5bf;
+
+    --ai:   #1d3a6e;   /* 藍 - Day1 ferry */
+    --matsu:#3d5a3d;   /* 松葉 - Day2 family */
+    --akane:#a94a4a;   /* 茜  - Day3 sunset flight */
+
+    --now-glow: #c28b34;
+  }
+
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; background:#f3ede0;}
+  html{color-scheme: light only;}
+  body{
+    font-family:"Shippori Mincho","Noto Serif JP", serif;
+    color:var(--ink);
+    background:var(--paper) !important;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+    min-height:100vh;
+    padding-bottom:env(safe-area-inset-bottom);
+  }
+
+  /* Paper texture */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(139,115,85,.05) 0%, transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(169,74,74,.03) 0%, transparent 50%),
+      url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.1 0 0 0 0 0.09 0 0 0 0 0.08 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 100% 100%, 100% 100%, 180px 180px;
+    pointer-events:none;
+    z-index:0;
+    opacity:.9;
+  }
+
+  main{
+    position:relative;
+    z-index:1;
+    max-width:560px;
+    margin:0 auto;
+    padding: 20px 22px 80px;
+  }
+
+  /* ── Header ───────────────────────── */
+  header{
+    padding: 28px 0 18px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 6px;
+  }
+  .kanji-mark{
+    font-family:"Shippori Mincho", serif;
+    font-weight:800;
+    font-size: 11px;
+    letter-spacing: .4em;
+    color: var(--ink-mute);
+    margin-bottom:10px;
+    text-transform:uppercase;
+  }
+  h1{
+    font-family:"Shippori Mincho", serif;
+    font-weight: 800;
+    font-size: 34px;
+    letter-spacing: .04em;
+    margin: 0 0 6px;
+    line-height: 1.2;
+  }
+  .range{
+    font-family:"JetBrains Mono", monospace;
+    font-size: 13px;
+    letter-spacing: .06em;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+    font-weight:400;
+  }
+  .range .dash{color:var(--ink-mute); margin:0 8px;}
+
+  .live{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    padding: 6px 0 0;
+  }
+  .live .label{
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--ink-mute);
+    font-weight:500;
+  }
+  .live .clock{
+    font-family:"JetBrains Mono", monospace;
+    font-size:28px;
+    font-weight:300;
+    letter-spacing:.02em;
+    color:var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+  .live .clock .sec{
+    font-size:16px;
+    color:var(--ink-mute);
+    margin-left:4px;
+  }
+
+  /* ── NOW card ─────────────────────── */
+  .now-card{
+    margin: 24px 0 36px;
+    padding: 22px 22px 24px;
+    background: linear-gradient(135deg, #fbf7ec 0%, #f2ead6 100%);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--now-glow);
+    position:relative;
+    overflow:hidden;
+  }
+  .now-card::before{
+    content:"";
+    position:absolute;
+    top:0; right:0;
+    width:80px; height:80px;
+    background: radial-gradient(circle at top right, rgba(194,139,52,.18), transparent 70%);
+    pointer-events:none;
+  }
+  .now-card .now-label{
+    font-size:10px;
+    letter-spacing:.4em;
+    color:var(--now-glow);
+    font-weight:700;
+    margin-bottom: 10px;
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .now-card .pulse{
+    display:inline-block;
+    width:6px; height:6px;
+    border-radius:50%;
+    background:var(--now-glow);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:.4; transform:scale(1);}
+    50%{opacity:1; transform:scale(1.4);}
+  }
+  .now-card .status-title{
+    font-size: 22px;
+    font-weight: 700;
+    line-height:1.35;
+    margin-bottom: 4px;
+    color:var(--ink);
+  }
+  .now-card .status-sub{
+    font-family:"JetBrains Mono", monospace;
+    font-size: 12px;
+    color:var(--ink-soft);
+    letter-spacing:.04em;
+    margin-bottom:14px;
+  }
+  .now-card .countdown{
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--line);
+  }
+  .now-card .countdown-label{
+    font-size:10px;
+    letter-spacing:.3em;
+    color:var(--ink-mute);
+  }
+  .now-card .countdown-value{
+    font-family:"JetBrains Mono", monospace;
+    font-size:16px;
+    font-weight:500;
+    color:var(--ink);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ── Day nav ─────────────────────── */
+  .day-nav{
+    display:grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap:6px;
+    margin-bottom: 32px;
+    padding: 4px;
+    background: var(--paper-2);
+    border: 1px solid var(--line-soft);
+  }
+  .day-nav button{
+    all:unset;
+    cursor:pointer;
+    text-align:center;
+    padding: 10px 4px;
+    font-family:"Shippori Mincho", serif;
+    font-size: 11px;
+    letter-spacing:.2em;
+    color: var(--ink-mute);
+    transition: all .25s ease;
+    font-weight:600;
+  }
+  .day-nav button .dnum{
+    display:block;
+    font-family:"JetBrains Mono", monospace;
+    font-size:15px;
+    font-weight:500;
+    letter-spacing:.02em;
+    margin-bottom:2px;
+    color:var(--ink-soft);
+  }
+  .day-nav button:hover{color:var(--ink);}
+  .day-nav button.active{
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .day-nav button.active .dnum{color:var(--paper);}
+
+  /* ── Day section ──────────────────── */
+  .day{
+    margin-bottom: 48px;
+    scroll-margin-top: 20px;
+  }
+  .day-head{
+    display:flex;
+    align-items:flex-end;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-top: 4px;
+  }
+  .day-idx{
+    font-family:"JetBrains Mono", monospace;
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--day-accent);
+    letter-spacing:-.02em;
+  }
+  .day-meta{flex:1;}
+  .day-label{
+    font-family:"Shippori Mincho", serif;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.15em;
+    color:var(--ink-mute);
+    margin-bottom:2px;
+  }
+  .day-theme{
+    font-family:"Shippori Mincho", serif;
+    font-size:20px;
+    font-weight:700;
+    color:var(--ink);
+    letter-spacing:.04em;
+  }
+  .day-stripe{
+    height: 2px;
+    background: var(--day-accent);
+    margin-bottom: 26px;
+    position:relative;
+  }
+  .day-stripe::after{
+    content:"";
+    position:absolute;
+    right:0; top:-3px;
+    width:8px; height:8px;
+    background:var(--day-accent);
+    border-radius:50%;
+  }
+
+  /* ── Timeline ─────────────────────── */
+  .timeline{
+    position:relative;
+    padding-left: 68px;
+  }
+  .timeline::before{
+    content:"";
+    position:absolute;
+    left: 59px;
+    top: 10px;
+    bottom: 6px;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .event{
+    position:relative;
+    padding: 0 0 22px 22px;
+    min-height: 44px;
+  }
+  .event:last-child{padding-bottom:6px;}
+
+  .event .time{
+    position:absolute;
+    left: -68px;
+    top: 2px;
+    width: 52px;
+    font-family:"JetBrains Mono", monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-soft);
+    letter-spacing:.02em;
+    font-variant-numeric: tabular-nums;
+    text-align:right;
+  }
+  .event .time.empty{color:var(--ink-mute); font-size:11px;}
+  .event .time.empty::before{content:"—"; color:var(--line);}
+  .event .time.empty span{display:none;}
+
+  .event .dot{
+    position:absolute;
+    left: -10px;
+    top: 8px;
+    width: 9px;
+    height: 9px;
+    border-radius:50%;
+    background:var(--paper);
+    border: 1.5px solid var(--ink-soft);
+    z-index: 2;
+  }
+  .event.transit .dot{
+    width:6px; height:6px;
+    left: -8px;
+    top:10px;
+    border-width:1px;
+    border-color:var(--line);
+    background:var(--paper);
+  }
+  .event.important .dot{
+    background: var(--day-accent);
+    border-color: var(--day-accent);
+    box-shadow: 0 0 0 3px rgba(0,0,0,.02);
+  }
+
+  .event .title{
+    font-family:"Shippori Mincho", serif;
+    font-size: 15.5px;
+    font-weight:600;
+    color:var(--ink);
+    line-height:1.45;
+    margin-bottom: 2px;
+  }
+  .event.transit .title{
+    font-weight:400;
+    color:var(--ink-soft);
+    font-size:14px;
+  }
+  .event.important .title{
+    font-weight:700;
+    color:var(--ink);
+  }
+
+  .event .note{
+    font-family:"Noto Serif JP", serif;
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height:1.6;
+    letter-spacing:.02em;
+  }
+  .event .ref{
+    display:inline-block;
+    margin-top:6px;
+    padding: 4px 8px;
+    background: var(--paper-2);
+    border: 1px solid var(--line-soft);
+    font-family:"JetBrains Mono", monospace;
+    font-size: 10.5px;
+    color:var(--ink-soft);
+    letter-spacing:.05em;
+  }
+
+  /* States */
+  .event.past{opacity: .35;}
+  .event.past .title{text-decoration: line-through; text-decoration-color: var(--line);}
+  .event.current .dot{
+    background: var(--now-glow);
+    border-color: var(--now-glow);
+    box-shadow: 0 0 0 4px rgba(194,139,52,.18), 0 0 12px rgba(194,139,52,.5);
+    animation: pulseDot 2s ease-in-out infinite;
+  }
+  @keyframes pulseDot{
+    0%,100%{box-shadow: 0 0 0 4px rgba(194,139,52,.18), 0 0 12px rgba(194,139,52,.5);}
+    50%{box-shadow: 0 0 0 8px rgba(194,139,52,.08), 0 0 16px rgba(194,139,52,.7);}
+  }
+  .event.current .title{color:var(--now-glow); font-weight:800;}
+  .event.current .time{color:var(--now-glow); font-weight:700;}
+
+  /* Day themes */
+  .day[data-day="1"]{--day-accent: var(--ai);}
+  .day[data-day="2"]{--day-accent: var(--matsu);}
+  .day[data-day="3"]{--day-accent: var(--akane);}
+
+  /* Fare/ref summary */
+  .summary{
+    margin-top: 48px;
+    padding: 24px 22px;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+    background: linear-gradient(to bottom, transparent, rgba(0,0,0,.01));
+  }
+  .summary h3{
+    font-family:"Shippori Mincho", serif;
+    font-size: 11px;
+    letter-spacing: .35em;
+    color: var(--ink-mute);
+    font-weight: 700;
+    margin: 0 0 16px;
+    text-transform: uppercase;
+  }
+  .summary dl{
+    margin:0;
+    display:grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px 14px;
+    font-size: 13px;
+  }
+  .summary dt{
+    font-family:"Shippori Mincho", serif;
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+  .summary dd{
+    margin:0;
+    font-family:"JetBrains Mono", monospace;
+    font-size:12px;
+    color:var(--ink);
+    letter-spacing:.03em;
+  }
+
+  .footer-mark{
+    margin-top: 56px;
+    text-align:center;
+    font-family:"Shippori Mincho", serif;
+    color: var(--ink-mute);
+    font-size: 11px;
+    letter-spacing: .6em;
+    padding-bottom: 20px;
+  }
+  .footer-mark .seal{
+    display:inline-block;
+    width: 44px; height:44px;
+    margin-bottom:12px;
+    border: 1.5px solid var(--akane);
+    color: var(--akane);
+    line-height: 41px;
+    font-family:"Shippori Mincho", serif;
+    font-size:22px;
+    font-weight:800;
+    letter-spacing:0;
+    transform: rotate(-3deg);
+  }
+
+  /* Small screens */
+  @media (max-width: 360px){
+    h1{font-size:28px;}
+    .now-card .status-title{font-size:19px;}
+    .timeline{padding-left:60px;}
+    .timeline::before{left:51px;}
+    .event .time{left:-60px; width:46px; font-size:12px;}
+  }
+</style>
+</head>
+<body>
+<main>
+
+  <header>
+    <div class="kanji-mark">旅 の し お り</div>
+    <h1>九州↺東京<br>三日間の周遊</h1>
+    <div class="range">
+      <span>2026.04.20</span><span class="dash">—</span><span>04.22</span>
+    </div>
+    <div class="live">
+      <span class="label">現 在</span>
+      <span class="clock" id="clock">--:--<span class="sec" id="sec">00</span></span>
+    </div>
+  </header>
+
+  <!-- NOW card -->
+  <section class="now-card" id="nowCard">
+    <div class="now-label"><span class="pulse"></span><span>NOW / 現況</span></div>
+    <div class="status-title" id="nowTitle">読み込み中…</div>
+    <div class="status-sub" id="nowSub"></div>
+    <div class="countdown">
+      <span class="countdown-label" id="cdLabel">次まで</span>
+      <span class="countdown-value" id="cdValue">—</span>
+    </div>
+  </section>
+
+  <!-- Day nav -->
+  <nav class="day-nav" id="dayNav">
+    <button data-jump="1" class="active"><span class="dnum">04.20</span>DAY 1</button>
+    <button data-jump="2"><span class="dnum">04.21</span>DAY 2</button>
+    <button data-jump="3"><span class="dnum">04.22</span>DAY 3</button>
+  </nav>
+
+  <!-- Days -->
+  <section class="day" data-day="1" id="day1">
+    <div class="day-head">
+      <div class="day-idx">01</div>
+      <div class="day-meta">
+        <div class="day-label">4月20日（月）</div>
+        <div class="day-theme">出発 — 船中泊</div>
+      </div>
+    </div>
+    <div class="day-stripe"></div>
+    <div class="timeline" id="tl1"></div>
+  </section>
+
+  <section class="day" data-day="2" id="day2">
+    <div class="day-head">
+      <div class="day-idx">02</div>
+      <div class="day-meta">
+        <div class="day-label">4月21日（火）</div>
+        <div class="day-theme">大阪で孫と — 太田川泊</div>
+      </div>
+    </div>
+    <div class="day-stripe"></div>
+    <div class="timeline" id="tl2"></div>
+  </section>
+
+  <section class="day" data-day="3" id="day3">
+    <div class="day-head">
+      <div class="day-idx">03</div>
+      <div class="day-meta">
+        <div class="day-label">4月22日（水）</div>
+        <div class="day-theme">東京同窓会 — 帰宅</div>
+      </div>
+    </div>
+    <div class="day-stripe"></div>
+    <div class="timeline" id="tl3"></div>
+  </section>
+
+  <!-- Summary -->
+  <section class="summary">
+    <h3>予 約 ・ 控 え</h3>
+    <dl>
+      <dt>さんふらわあ</dt>
+      <dd>¥21,980 / ※40007 key551 / 当日支払</dd>
+      <dt>新幹線（名古屋→東京）</dt>
+      <dd>切符購入済</dd>
+      <dt>ソラシドエア</dt>
+      <dd>SNA097 / 予約3107 / バーゲン75</dd>
+      <dt>別府駅バス</dt>
+      <dd>東口 ⑤ 乗り場</dd>
+    </dl>
+  </section>
+
+  <div class="footer-mark">
+    <div class="seal">旅</div>
+    <div>い っ て ら っ し ゃ い</div>
+  </div>
+
+</main>
+
+<script>
+  // ── Itinerary data ──────────────────
+  const DATA = {
+    1: { date: "2026-04-20", events: [
+      {t:"14:50", title:"三代家迎え"},
+      {t:"15:00", title:"フレイン買い物"},
+      {t:"15:21", title:"緒方駅 発", note:"大分駅行 1時間6分"},
+      {t:"16:27", title:"大分駅 着"},
+      {t:"16:50", title:"大分駅 発", note:"別府駅行 12分"},
+      {t:"17:02", title:"別府駅 着"},
+      {t:"17:18", title:"亀の井バス 発", note:"別府駅東口 ⑤乗り場 → さんふらわあターミナル前"},
+      {t:"18:45", title:"さんふらわあフェリー 出港", note:"別府 → 大阪 ／ ¥21,980", ref:"※40007  key551 ・ 当日支払", important:true},
+    ]},
+    2: { date: "2026-04-21", events: [
+      {t:"05:30", title:"下船準備"},
+      {t:"06:35", title:"大阪南港 着", important:true},
+      {t:null, title:"南港 → コスモスクエア", note:"ニュートラム", transit:true},
+      {t:null, title:"コスモスクエア → 本町", note:"Osaka Metro 中央線", transit:true},
+      {t:null, title:"本町 → 箕面萱野", note:"北大阪急行線", transit:true},
+      {t:null, title:"バス → 市役所前", note:"555ビル", transit:true},
+      {t:null, title:"孫に会う", important:true},
+      {t:null, title:"箕面萱野 → 新大阪", note:"北大阪急行線", transit:true},
+      {t:null, title:"新大阪 → 名古屋", note:"新幹線", transit:true},
+      {t:null, title:"名鉄名古屋 → 太田川", note:"名鉄常滑線", transit:true},
+      {t:null, title:"マーレホテル 着", note:"太田川駅から徒歩約6分", important:true},
+    ]},
+    3: { date: "2026-04-22", events: [
+      {t:"08:25", title:"太田川駅"},
+      {t:"08:45", title:"名鉄名古屋"},
+      {t:"10:06", title:"名古屋駅 発", note:"東京行", ref:"切符購入済", important:true},
+      {t:"11:45", title:"東京駅 着"},
+      {t:null, title:"東京駅 → 上野駅 裏口", transit:true},
+      {t:null, title:"同窓会", important:true},
+      {t:null, title:"上野 → 浜松町", transit:true},
+      {t:null, title:"浜松町 → 羽田空港 第1・2ターミナル", note:"B2 〜 F2", transit:true},
+      {t:"17:15", title:"ソラシドエア 羽田 発", note:"大分行", ref:"SNA097 ・ 予約3107 ・ バーゲン75", important:true},
+      {t:"18:55", title:"ソラシドエア 大分 着"},
+      {t:"19:10", title:"大分交通エアライナー 発", note:"空港 → 大分駅前"},
+      {t:"20:08", title:"大分駅 着"},
+      {t:"21:36", title:"大分駅 発", note:"豊後竹田行"},
+      {t:"22:39", title:"緒方駅 着"},
+      {t:"22:40", title:"自宅へ", note:"おつかれさまでした", important:true},
+    ]},
+  };
+
+  // ── Render ────────────────────────
+  function mkEvent(ev){
+    const el = document.createElement("div");
+    el.className = "event";
+    if(ev.transit) el.classList.add("transit");
+    if(ev.important) el.classList.add("important");
+
+    const time = document.createElement("div");
+    time.className = "time" + (ev.t ? "" : " empty");
+    time.innerHTML = ev.t ? `<span>${ev.t}</span>` : "<span></span>";
+    el.appendChild(time);
+
+    const dot = document.createElement("div");
+    dot.className = "dot";
+    el.appendChild(dot);
+
+    const title = document.createElement("div");
+    title.className = "title";
+    title.textContent = ev.title;
+    el.appendChild(title);
+
+    if(ev.note){
+      const n = document.createElement("div");
+      n.className = "note";
+      n.textContent = ev.note;
+      el.appendChild(n);
+    }
+    if(ev.ref){
+      const r = document.createElement("div");
+      r.className = "ref";
+      r.textContent = ev.ref;
+      el.appendChild(r);
+    }
+
+    // store event time for status logic
+    if(ev.t) el.dataset.time = ev.t;
+    return el;
+  }
+
+  for(const d of [1,2,3]){
+    const tl = document.getElementById("tl"+d);
+    DATA[d].events.forEach(ev=>{
+      const node = mkEvent(ev);
+      node.dataset.day = d;
+      tl.appendChild(node);
+    });
+  }
+
+  // ── Day nav jump ──────────────────
+  document.querySelectorAll("#dayNav button").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      const d = b.dataset.jump;
+      document.getElementById("day"+d).scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+
+  // ── Clock + Now logic ─────────────
+  const TRIP_START = new Date("2026-04-20T14:50:00+09:00");
+  const TRIP_END   = new Date("2026-04-22T22:40:00+09:00");
+
+  function eventDateTime(dayIdx, hhmm){
+    const dayDate = DATA[dayIdx].date;
+    return new Date(`${dayDate}T${hhmm}:00+09:00`);
+  }
+
+  function allTimedEvents(){
+    const list = [];
+    [1,2,3].forEach(d=>{
+      DATA[d].events.forEach((ev,i)=>{
+        if(ev.t) list.push({day:d, idx:i, time:eventDateTime(d,ev.t), ev});
+      });
+    });
+    return list.sort((a,b)=>a.time - b.time);
+  }
+
+  function fmtClock(dt){
+    const h = String(dt.getHours()).padStart(2,"0");
+    const m = String(dt.getMinutes()).padStart(2,"0");
+    return {hm: `${h}:${m}`, s: String(dt.getSeconds()).padStart(2,"0")};
+  }
+
+  function fmtDuration(ms){
+    if(ms < 0) return "—";
+    const totalMin = Math.floor(ms/60000);
+    const d = Math.floor(totalMin/1440);
+    const h = Math.floor((totalMin%1440)/60);
+    const m = totalMin % 60;
+    if(d>0) return `${d}日 ${h}時間 ${m}分`;
+    if(h>0) return `${h}時間 ${m}分`;
+    return `${m}分`;
+  }
+
+  function updateState(){
+    const now = new Date();
+    const fc = fmtClock(now);
+    document.getElementById("clock").firstChild.nodeValue = fc.hm;
+    document.getElementById("sec").textContent = fc.s;
+
+    const timed = allTimedEvents();
+    const nowTitle = document.getElementById("nowTitle");
+    const nowSub   = document.getElementById("nowSub");
+    const cdLabel  = document.getElementById("cdLabel");
+    const cdValue  = document.getElementById("cdValue");
+
+    // Clear past/current classes
+    document.querySelectorAll(".event").forEach(e=>{
+      e.classList.remove("past","current");
+    });
+
+    if(now < TRIP_START){
+      // Pre-trip
+      const first = timed[0];
+      nowTitle.textContent = "出発前";
+      nowSub.textContent = `最初の予定 ・ ${first.ev.t} ${first.ev.title}`;
+      cdLabel.textContent = "出発まで";
+      cdValue.textContent = fmtDuration(TRIP_START - now);
+      return;
+    }
+
+    if(now > TRIP_END){
+      nowTitle.textContent = "旅おわり";
+      nowSub.textContent = "おつかれさまでした";
+      cdLabel.textContent = "—";
+      cdValue.textContent = "—";
+      document.querySelectorAll(".event").forEach(e=>e.classList.add("past"));
+      return;
+    }
+
+    // During trip: find current + next
+    let currentIdx = -1;
+    for(let i=0;i<timed.length;i++){
+      if(timed[i].time <= now) currentIdx = i;
+      else break;
+    }
+    const current = currentIdx >= 0 ? timed[currentIdx] : null;
+    const next = timed[currentIdx + 1] || null;
+
+    // Mark past events in DOM
+    if(current){
+      const tlEvents = document.querySelectorAll(`.timeline .event`);
+      tlEvents.forEach(e=>{
+        const d = parseInt(e.dataset.day);
+        const t = e.dataset.time;
+        if(!t){
+          // transit: mark past if enclosing timed events are past
+          return;
+        }
+        const evDt = eventDateTime(d,t);
+        if(evDt < current.time) e.classList.add("past");
+        else if(evDt.getTime() === current.time.getTime()) e.classList.add("current");
+      });
+    }
+
+    // Status text
+    if(current){
+      nowTitle.textContent = current.ev.title;
+      nowSub.textContent = `${current.ev.t} 〜 ／ DAY ${current.day}` + (current.ev.note ? ` ・ ${current.ev.note}` : "");
+    }else{
+      nowTitle.textContent = "待機中";
+      nowSub.textContent = "";
+    }
+
+    if(next){
+      cdLabel.textContent = `次まで ・ ${next.ev.t} ${next.ev.title}`;
+      cdValue.textContent = fmtDuration(next.time - now);
+    }else{
+      cdLabel.textContent = "旅の終わりまで";
+      cdValue.textContent = fmtDuration(TRIP_END - now);
+    }
+  }
+
+  updateState();
+  setInterval(updateState, 1000);
+
+  // Scroll spy for day nav
+  const dayEls = [document.getElementById("day1"), document.getElementById("day2"), document.getElementById("day3")];
+  const navBtns = document.querySelectorAll("#dayNav button");
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const d = e.target.dataset.day;
+        navBtns.forEach(b=>b.classList.toggle("active", b.dataset.jump === d));
+      }
+    });
+  }, {rootMargin: "-40% 0px -50% 0px"});
+  dayEls.forEach(el=>obs.observe(el));
+</script>
+</body>
+</html>
